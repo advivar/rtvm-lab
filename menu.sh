@@ -49,7 +49,7 @@ GATEWAY="${BASE_IP}.254"
 DNS_UL="193.50.27.27"
 DNS_SECONDARY="8.8.8.8"
 
-printf "Action: Sauvegarde de l'état global (Web, DNS, Mails) de l'entreprise précédente...\n"
+printf "Action : Sauvegarde de l'état global (Web, DNS, Mails) de l'entreprise précédente...\n"
 
 # backup data
 # -f : test existence fichier
@@ -80,7 +80,6 @@ RESTORE_MAIL=1
 # -d : test existence dossier
 if [ -d "/opt/rtvm-lab/archives/${CHOIX}" ]; then
     printf "\n\e[1;33m[?]\e[0m Une sauvegarde existe pour l'entreprise %s.\n" "${CHOIX}"
-    printf "\e[1;36m💡 Conseil : Si vous débutez un nouveau TP, il est recommandé de réinitialiser au moins le DNS et les Mails pour éviter les conflits.\e[0m\n\n"
 
     # read -t 10 : prompt avec timeout 10s
     read -t 10 -p "Voulez-vous RÉINITIALISER le site WEB ? [y/N] (Défaut N, conserve TOUT dans 10s) : " reset_web
@@ -369,7 +368,8 @@ printf "\t                    Identifiants : user@%s | Mot de passe : rtvm-lab\n
 printf "\n\t%s Panel Admin     : http://%s.10:5000\n" "$(check_panel)" "$BASE_IP"
 
 # credits
-printf "\n\e[1;30mInfrastructures de TP conçues par Augustin de Vivar et Maxence Kroetz (RTVM-Lab)\e[0m\n"
+printf "\n\e[1;30mRTVM-Lab - Plateforme d'apprentissage conçue et réalisée par Augustin de Vivar et Maxence Kroetz\e[0m\n"
+printf "\n\e[1;30mhttps://github.com/advivar/rtvm-lab\e[0m\n"
 
 printf "\nAppuyez sur entrée...\n"
 read

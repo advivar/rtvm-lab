@@ -222,17 +222,17 @@ Cette étape assure l'appel asynchrone du menu d'infrastructure dès que la sess
    * Ce bloc de script charge l'environnement utilisateur standard (couleurs, alias) puis vérifie via la commande `tty` si l'étudiant se situe sur l'affichage principal (`tty1`). Si la condition est vraie, le menu d'orchestration est appelé après une temporisation de sécurité d'une seconde.
    * Insérer le bloc d'instructions suivant :
      ```bash
-      if [ -f ~/.bashrc ]; then
+     if [ -f ~/.bashrc ]; then
           . ~/.bashrc
-      fi
+     fi
 
-      if [ "$(tty)" = "/dev/tty1" ]; then
+     if [ "$(tty)" = "/dev/tty1" ]; then
           sleep 1
           sudo /opt/rtvm-lab/menu.sh
           if [ $? -ne 0 ]; then
               exit
           fi
-      fi
+     fi
      ```
 3. **Restituer la propriété exclusive du profil à son utilisateur cible :**
    ```bash
