@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>_COMPANY_LETTER_ Energy — Production & Solutions Réseau</title>
+    <style>
+        :root {
+            /* Ces variables seront remplacées dynamiquement par menu.sh */
+            --primary: _PRIMARY_COLOR_;
+            --primary-hover: _PRIMARY_HOVER_;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border: #e5e7eb;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+        header {
+            background-color: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.03em;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a.btn-mail {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .nav-links a.btn-mail:hover { background-color: var(--primary-hover); }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .hero { padding: 90px 0 70px 0; text-align: center; }
+        .badge {
+            display: inline-block;
+            background-color: var(--bg-white);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid var(--primary);
+        }
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 35px auto;
+        }
+        .services {
+            background-color: var(--bg-white);
+            padding: 70px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 45px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-light);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        .card h3 { font-size: 1.2rem; margin-bottom: 10px; font-weight: 700; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 35px 0;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="brand">⚡ _COMPANY_LETTER_ ENERGY</div>
+            <div class="nav-links">
+                <a href="#accueil">Accueil</a>
+                <a href="#services">Infrastructures</a>
+                <a href="http://webmail._DOMAIN_" class="btn-mail">Accéder au Webmail</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="hero" id="accueil">
+            <div class="container">
+                <span class="badge">Opérateur de Réseau Énergétique Critique</span>
+                <h1>L'énergie de demain, propulsée par le pôle _COMPANY_LETTER_</h1>
+                <p>Producteur indépendant d'énergies renouvelables (Solaire, Éolien, Hydroélectrique). Nous pilotons la distribution et la résilience de nos flux industriels sur le domaine applicatif <strong>_DOMAIN_</strong>.</p>
+            </div>
+        </section>
+        <section class="services" id="services">
+            <div class="container">
+                <h2 class="section-title">Nos Domaines de Production & Distribution</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">🌱</div>
+                        <h3>Production Éco-Responsable</h3>
+                        <p>Gestion automatisée de nos parcs photovoltaïques et éoliens de haute capacité connectés au maillage régional.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔌</div>
+                        <h3>Smart Grid & Distribution IP</h3>
+                        <p>Acheminement et équilibrage de charge de puissance électrique optimisés en temps réel via des infrastructures de routage dédiées.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📬</div>
+                        <h3>Relations Acteurs & Messagerie</h3>
+                        <p>Suivi des flux d'échange d'énergie et support technique opéré par nos administrateurs via notre serveur de messagerie sécurisé.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 _COMPANY_LETTER_ Energy Ltd. - Plateforme d'apprentissage RTVM-Lab conçue et réalisée par Augustin de Vivar et Maxence Kroetz</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,73 @@
+services:
+  web:
+    image: httpd:alpine
+    container_name: rtvm-web
+    volumes:
+      - /home/etudiant/www:/usr/local/apache2/htdocs
+    ports:
+      - "${IP_WEB}:80:80"
+    restart: unless-stopped
+
+  dns:
+    image: ubuntu/bind9
+    container_name: rtvm-dns
+    volumes:
+      - ./dns/db.zone:/etc/bind/db.zone:ro
+      - ./dns/named.conf.local:/etc/bind/named.conf.local:ro
+      - ./dns/named.conf.options:/etc/bind/named.conf.options:ro
+      - ./dns/zones:/etc/bind/zones:ro
+    ports:
+      - "${IP_DNS}:53:53/udp"
+      - "${IP_DNS}:53:53/tcp"
+    restart: unless-stopped
+
+  webmail:
+    image: roundcube/roundcubemail:latest
+    container_name: rtvm-webmail
+    dns:
+      - ${IP_DNS}
+    environment:
+      - ROUNDCUBEMAIL_DEFAULT_HOST=rtvm-smtp
+      - ROUNDCUBEMAIL_SMTP_SERVER=rtvm-smtp
+    ports:
+      - "${IP_WEBMAIL}:80:80"
+    restart: unless-stopped
+
+  smtp:
+    image: mailserver/docker-mailserver:latest
+    container_name: rtvm-smtp
+    hostname: smtp.${DOMAIN}
+    dns:
+      - ${IP_DNS}
+    ports:
+      - "${IP_SMTP}:25:25"
+      - "${IP_SMTP}:143:143"
+    volumes:
+      - ./mail-data/mail:/var/mail
+      - ./mail-data/mail-state:/var/mail-state
+      - ./mail-data/mail-logs:/var/log/mail
+      - ./mail-data/config:/tmp/docker-mailserver
+    environment:
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_FAIL2BAN=0
+      - ENABLE_POSTGREY=0
+      - ONE_DIR=1
+    restart: unless-stopped
+
+  ftp:
+    image: fauria/vsftpd
+    container_name: rtvm-ftp
+    environment:
+      - FTP_USER=etudiant
+      - FTP_PASS=rtvm-lab
+      - PASV_ADDRESS=${IP_FTP}
+      - PASV_MIN_PORT=21100
+      - PASV_MAX_PORT=21110
+    volumes:
+      - /home/etudiant/www:/home/vsftpd/etudiant/www
+    ports:
+      - "${IP_FTP}:21:21"
+      - "${IP_FTP}:20:20"
+      - "${IP_FTP}:21100-21110:21100-21110"
+    restart: unless-stopped
