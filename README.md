@@ -1,4 +1,4 @@
-# RTVM-LAB
+# 🌐 RTVM-LAB
 
 > ⚠️ **AVERTISSEMENT CONFIGURATION DNS :** Par défaut, l'infrastructure de ce laboratoire virtuel est configurée pour utiliser le serveur DNS de l'Université de Lorraine (`193.50.27.27`) comme redirecteur primaire (forwarder). Si cette machine virtuelle est déployée dans un autre environnement de test, sur un autre réseau académique ou pour d'autres besoins spécifiques, il est impératif de modifier cette adresse IP dans le script `menu.sh` (variable `DNS_UL`) afin d'éviter tout blocage de la résolution de noms ou perte de connectivité externe.
 
@@ -19,6 +19,15 @@ La solution repose sur l'utilisation de conteneurs Docker pour virtualiser les s
 * ✉️ **Interface Webmail** (Roundcube)
 
 Un panel d'administration est inclus pour superviser l'état des conteneurs, modifier le routage IP et injecter des enregistrements DNS.
+
+## 🚀 Démarrage Rapide (Version Plug-and-Play)
+Pour les utilisateurs souhaitant tester l'environnement immédiatement sans passer par la phase d'installation complète, une image pré-configurée de la machine virtuelle est disponible au téléchargement.
+
+1. Télécharger l'appliance virtuelle complète : **[Lien vers la Release ou le Cloud pour télécharger le fichier .ova]**
+2. Ouvrir VirtualBox, aller dans **Fichier** > **Importer un appareil virtuel**.
+3. Sélectionner le fichier `.ova` téléchargé.
+4. Dans les paramètres de la carte réseau, s'assurer que le mode est sur **Accès par pont** et que le mode promiscuité est sur **Allow All**.
+5. Démarrer la VM. Le système s'initialisera automatiquement sur l'interface de sélection réseau de RTVM-LAB.
 
 ## Fonctionnalités des Composants
 
@@ -76,6 +85,7 @@ Cette étape décrit la création initiale de la machine virtuelle sur l'hypervi
    * **Câble connecté (Virtual Cable Connected)** : Laisser la case cochée.
 4. **Déroulement de l'installation d'Ubuntu Server :**
    * Charger l'image ISO d'Ubuntu Server 26.04 et démarrer la VM.
+   * Lors du démarrage, il est recommandé de décocher l'option **Proceed with Unattended Installation** afin de pouvoir configurer manuellement l'utilisateur.
    * Lors de l'assistant d'installation, sélectionner l'option **Ubuntu Server Minimized** afin d'optimiser l'empreinte mémoire et d'éviter l'installation de paquets superflus.
    * Créer le compte utilisateur initial avec les identifiants stricts suivants :
      * **Nom d'utilisateur** : `master`
@@ -88,12 +98,12 @@ Se connecter sur la console de la VM ou via SSH en utilisant le compte administr
 
 1. **Mise à jour complète du système d'exploitation :**
    ```bash
-   sudo apt update && sudo apt upgrade -y
+   sudo apt update && sudo apt upgrade
    ```
 2. **Installation des dépendances logicielles et des moteurs d'exécution :**
    * *Outils réseau, composants du moteur Docker, et environnement d'exécution pour le panel Flask.*
    ```bash
-   sudo apt install net-tools docker.io docker-compose-v2 python3 python3-flask python3-pip -y
+   sudo apt install nano whiptail iputils-ping dnsutils curl wget net-tools docker.io docker-compose-v2 python3 python3-flask man-db
    ```
 3. **Persistance et activation du démon Docker :**
    * Configurer le service système pour s'exécuter de façon automatique à chaque initialisation de la machine.
@@ -132,22 +142,25 @@ Cette étape structure l'arborescence système et rapatrie automatiquement l'ens
    ```
 2. **Télécharger les scripts applicatifs via  `curl` :**
    ```bash
-   sudo curl -o /opt/rtvm-lab/docker-compose.yml [https://raw.githubusercontent.com/advivar/rtvm-lab/main/docker-compose.yml](https://raw.githubusercontent.com/advivar/rtvm-lab/main/docker-compose.yml)
-   sudo curl -o /opt/rtvm-lab/menu.sh [https://raw.githubusercontent.com/advivar/rtvm-lab/main/menu.sh](https://raw.githubusercontent.com/advivar/rtvm-lab/main/menu.sh)
-   sudo curl -o /opt/rtvm-lab/admin-panel.py [https://raw.githubusercontent.com/advivar/rtvm-lab/main/admin-panel.py](https://raw.githubusercontent.com/advivar/rtvm-lab/main/admin-panel.py)
-   sudo curl -o /opt/rtvm-lab/templates/index.html [https://raw.githubusercontent.com/advivar/rtvm-lab/main/index.html](https://raw.githubusercontent.com/advivar/rtvm-lab/main/index.html)
+   sudo curl -o /opt/rtvm-lab/docker-compose.yml https://raw.githubusercontent.com/advivar/rtvm-lab/main/docker-compose.yml
+   sudo curl -o /opt/rtvm-lab/menu.sh https://raw.githubusercontent.com/advivar/rtvm-lab/main/menu.sh
+   sudo curl -o /opt/rtvm-lab/admin-panel.py https://raw.githubusercontent.com/advivar/rtvm-lab/main/admin-panel.py
+   sudo curl -o /opt/rtvm-lab/templates/index.html https://raw.githubusercontent.com/advivar/rtvm-lab/main/index.html
    ```
-3. **Application des permissions et assignation des propriétés :**
-   * Définir l'utilisateur `master` comme propriétaire de l'environnement de laboratoire et associer le groupe d'exécution `etudiant`.
+3. **Application des permissions de sécurité strictes :**
+   * Attribuer la propriété exclusive de l'infrastructure à l'administrateur (`master`) :
    ```bash
-   sudo chown -R master:etudiant /opt/rtvm-lab
+   sudo chown -R master:master /opt/rtvm-lab
    ```
 4. **Verrouillage des privilèges d'accès sur le système de fichiers :**
-   * Accorder l'ensemble des droits d'édition à `master`, restreindre l'étudiant à la seule consultation des fichiers de configuration, et autoriser l'exécution exclusive de la TUI.
+   * Appliquer un cloisonnement strict et sécuriser les fichiers sensibles :
    ```bash
-   sudo chmod 750 /opt/rtvm-lab
-   sudo chmod 640 /opt/rtvm-lab/docker-compose.yml
-   sudo chmod 750 /opt/rtvm-lab/menu.sh
+   sudo chmod 700 /opt/rtvm-lab
+   sudo touch /opt/rtvm-lab/.env
+   sudo chmod 600 /opt/rtvm-lab/.env
+   sudo chmod 600 /opt/rtvm-lab/docker-compose.yml
+   sudo chmod 600 /opt/rtvm-lab/admin-panel.py
+   sudo chmod 700 /opt/rtvm-lab/menu.sh
    ```
 
 ### Étape 4 : Élévation contrôlée des privilèges (Sudoers)
@@ -209,13 +222,17 @@ Cette étape assure l'appel asynchrone du menu d'infrastructure dès que la sess
    * Ce bloc de script charge l'environnement utilisateur standard (couleurs, alias) puis vérifie via la commande `tty` si l'étudiant se situe sur l'affichage principal (`tty1`). Si la condition est vraie, le menu d'orchestration est appelé après une temporisation de sécurité d'une seconde.
    * Insérer le bloc d'instructions suivant :
      ```bash
-     if [ -f ~/.bashrc ]; then
-         . ~/.bashrc
-     fi
-     if [ "$(tty)" = "/dev/tty1" ]; then
-         sleep 1
-         sudo /opt/rtvm-lab/menu.sh
-     fi
+      if [ -f ~/.bashrc ]; then
+          . ~/.bashrc
+      fi
+
+      if [ "$(tty)" = "/dev/tty1" ]; then
+          sleep 1
+          sudo /opt/rtvm-lab/menu.sh
+          if [ $? -ne 0 ]; then
+              exit
+          fi
+      fi
      ```
 3. **Restituer la propriété exclusive du profil à son utilisateur cible :**
    ```bash
