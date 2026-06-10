@@ -1,5 +1,7 @@
 # RTVM-LAB
 
+> ⚠️ **AVERTISSEMENT CONFIGURATION DNS :** Par défaut, l'infrastructure de ce laboratoire virtuel est configurée pour utiliser le serveur DNS de l'Université de Lorraine (`193.50.27.27`) comme redirecteur primaire (forwarder). Si cette machine virtuelle est déployée dans un autre environnement de test, sur un autre réseau académique ou pour d'autres besoins spécifiques, il est impératif de modifier cette adresse IP dans le script `menu.sh` (variable `DNS_UL`) afin d'éviter tout blocage de la résolution de noms ou perte de connectivité externe.
+
 ## Présentation du projet
 RTVM-LAB est un environnement de test virtuel développé dans le cadre de la formation BUT Réseaux et Télécommunications en deuxième année. L'objectif de ce projet est de fournir une machine virtuelle (VM) autonome, conçue pour simuler une infrastructure réseau d'entreprise complète. Ce système est particulièrement adapté pour la mise en situation lors de travaux pratiques ou d'événements (hackathon par exemple).
 
